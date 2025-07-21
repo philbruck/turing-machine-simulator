@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+# -*- coding: html, css, javascript -*-
+*****************************************************************************
+Copyright (c) 2025 philbruck
+
+date: 2025-07-18
+author: philbruck <kontakt@philbruck.de> [please only pgp-encrypted, see my GitHub]
+contributors: -
+version: 1.0.0
+*****************************************************************************
+This program is a (single file) turing machine simulator. You can define your own transition rules, enter the start band,
+define the start state and define the end states. After initialization, the turing program is executed visually.
+-->
+<html lang="en">
+
+<head>
+  <title>Turing-Maschinen-Simulator</title>
+
+  <meta charset="utf-8">
+  <meta name="author" content="philbruck">
+  <meta name="description"
+    content="Free Online Turing Machine Simulator. Create your own programs and execute them on a turing machine">
+  <meta name="keywords"
+    content="Turing, Alan Turing, Machine, Turing-Machine, Turing machine, Turing-Machine-Simulator, Turing machine simulator, turing machine, turing-machine-simulator">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta http-equiv="refresh" content="0;url=javascript:void(0);">
+  <script>
+    (function () {
+      const userLanguage = navigator.language || navigator.userLanguage;
+      if (userLanguage.startsWith('en')) {
+        window.location.replace('./Turing-machine-simulator-en.html');
+      } else if (userLanguage.startsWith('de')) {
+        window.location.replace('./Turing-machine-simulator-de.html');
+      } else {
+        window.location.replace('./Turing-machine-simulator-en.html');
+      }
+    })();
+  </script>
+
+</head>
+
+<body>
+  <h1>Ooops! The redirect doesn't work.</h1>
+  <h3>Visit: /Turing-machine-simulator-en.html</h3>
+</body>
+
+</html>

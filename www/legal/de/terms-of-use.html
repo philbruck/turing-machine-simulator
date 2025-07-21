@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--
+# -*- coding: html, css, javascript -*-
+*****************************************************************************
+Copyright (c) 2025 philbruck
+
+date: 2025-07-18
+author: philbruck <kontakt@philbruck.de> [please only pgp-encrypted, see my GitHub]
+contributors: -
+version: 1.0.0
+*****************************************************************************
+This program is a (single file) turing machine simulator. You can define your own transition rules, enter the start band,
+define the start state and define the end states. After initialization, the turing program is executed visually.
+-->
+<html lang="de">
+
+<head>
+  <title>Turing-Maschinen-Simulator</title>
+
+  <meta charset="utf-8">
+  <meta name="author" content="philbruck">
+  <meta name="description"
+    content="Free Online Turing Machine Simulator. Create your own programs and execute them on a Turing machine">
+  <meta name="keywords"
+    content="Turing, Alan Turing, Machine, Turing-Machine, Turing machine, Turing-Machine-Simulator, Turing machine simulator, turing machine, turing-machine-simulator">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon"
+    href="data:image/x-icon;base64,AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAACMuAAAjLgAAAAAAAAAAAAD//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////v7+//7+/v///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////v7+//////+7u7v/p6en/+3t7f/e3t7////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////FxcX/hISE/4eHh/95eXn/cXFx/4WFhf///////////+zs7P/j4+P/9vb2//39/f///////////////////////////////////////////////////////////////////////////////////////////////////////////83Nzf9+fn7/urq6/8LCwv+5ubn/hISE/6urq/+6urr/d3d3/1VVVf94eHj/7+/v///////////////////////////////////////////////////////////////////////////////////////////////////////X19f/ZGRk/6qqqv/Nzc3/5ubm/8fHx/+cnJz/enp6/3h4eP84ODj/JiYm/0FBQf+Ojo7/+/v7//////////////////////////////////////////////////////////////////////////////////////////////////Hx8f+ioqL/tLS0/8rKyv/i4uL/ycnJ/5KSkv+UlJT/YmJi/y4uLv8ICAj/NDQ0/4yMjP/8/Pz/8vLy//Hx8f/X19f/9fX1/////////////////////////////////////////////////////////////////////////////////5ycnP9ubm7/wsLC/8HBwf+wsLD/iYmJ/5KSkv+Li4v/RkZG/zY2Nv9RUVH/pKSk/3p6ev9jY2P/cXFx/zk5Of96enr/+fn5////////////////////////////////////////////////////////////////////////////1NTU/8jIyP9sbGz/lJSU/2FhYf+7u7v///////T09P+urq7/nJyc/7CwsP/AwMD/PT09/3R0dP9nZ2f/eXl5/2BgYP9ubm7/zs7O////////////////////////////////////////////////////////////9/f3//j4+P/u7u7/4uLi/6Kiov/c3Nz/xcXF/9nZ2f/19fX/7e3t/+rq6v/k5OT/rKys/1dXV/9ra2v/xMTE//Dw8P/g4OD/gICA/0xMTP9tbW3//f39///////////////////////////////////////////////////////V1dX/0tLS/7i4uP+2trb/ra2t/7CwsP+2trb/sLCw/62trf+UlJT/tbW1/7Kysv9YWFj/S0tL/6ysrP/////////////////X19f/aWlp/5SUlP///////////////////////////////////////////////////////v7+/7+/v/+5ubn/vLy8/8vLy/+cnJz/kpKS/7i4uP+jo6P/lJSU/6ioqP+wsLD/zs7O/7S0tP9UVFT/ra2t/////////////////97e3v9cXFz/WVlZ/+3t7f////////////////////////////7+/v/+/v7//v7+//z8/P/19fX/09PT/9HR0f/m5ub/7+/v/93d3f/V1dX/7Ozs/+Hh4f/j4+P/7Ozs/+Li4v/Z2dn/p6en/09PT/+Ghob/4+Pj///////4+Pj/pKSk/2ZmZv9WVlb/9fX1////////////////////////////5ubm/8jIyP/CwsL/sLCw/8DAwP/Jycn/xcXF/8jIyP+4uLj/4eHh///////////////////////////////////////g4OD/U1NT/0xMTP+JiYn/lZWV/5aWlv9UVFT/cnJy/9fX1//////////////////////////////////x8fH/k5OT/6Wlpf+4uLj/8vLy/5iYmP+jo6P/oKCg/5KSkv/Z2dn///////////////////////////////////////7+/v/v7+//mZmZ/0BAQP9DQ0P/YmJi/zw8PP+tra3////////////////////////////////////////////ExMT/2NjY/9TU1P//////ycnJ/9XV1f+4uLj/zc3N/+jo6P/////////////////////////////////////////////////r6+v/qamp/7a2tv/Z2dn/09PT//39/f////////////////////////////////////////////7+/v/+/v7////////////+/v7//v7+//7+/v//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+    type="image/x-icon">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+  <header class="sticky-top">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img
+            src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1OTUuMjggNTk1LjI4IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1OTUuMjggNTk1LjI4OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6bm9uZTtzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6NDtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9Cgkuc3Qxe2ZpbGw6bm9uZTtzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6NTtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9Cgkuc3Qye2ZpbGw6bm9uZTtzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6OTtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9Cgkuc3Qze2ZpbGw6bm9uZTtzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6MztzdHJva2UtbWl0ZXJsaW1pdDoxMDt9Cgkuc3Q0e2ZpbGw6bm9uZTt9Cgkuc3Q1e2ZvbnQtZmFtaWx5OidJQk1QbGV4TW9uby1Cb2xkJzt9Cgkuc3Q2e2ZvbnQtc2l6ZTo1OS45MzQxcHg7fQo8L3N0eWxlPgo8cGF0aCBkPSJNMzk1LjgsMzQwLjMyYy0wLjA2LTAuMjgtMC4xMy0wLjU2LTAuMi0wLjg0bDEwLjY4LTQuNDNjLTAuNS0xLjczLTEuMDktMy40NS0xLjgtNS4xNmMtMC43MS0xLjctMS41LTMuMzQtMi4zOC00LjkyCglsLTEwLjY5LDQuNDNjLTIuNS00LjExLTUuNzgtNy42NC05LjU5LTEwLjQxbDUuMzctMTAuMzFjLTEuNDktMS4wMS0zLjA2LTEuOTQtNC42OS0yLjc5Yy0xLjY0LTAuODUtMy4zLTEuNTktNC45OC0yLjI0bC01LjM3LDEwLjMxCgljLTQuNDItMS41MS05LjE3LTIuMTctMTQuMDEtMS44NWwtMi41Mi0xMS4zN2MtMS43OSwwLjE5LTMuNTksMC40OC01LjM5LDAuODhzLTMuNTUsMC45LTUuMjUsMS40OWwyLjUyLDExLjM3CgljLTQuNTIsMS43NS04LjU0LDQuMzYtMTEuOSw3LjU5bC05LjI2LTcuMWMtMS4yNSwxLjMtMi40NCwyLjY3LTMuNTcsNC4xNGMtMS4xMiwxLjQ2LTIuMTQsMi45Ny0zLjA3LDQuNTJsOS4yNSw3LjEKCWMtMi4yNyw0LjEyLTMuNzYsOC42OC00LjI5LDEzLjQ1bC0xMS42MywwLjUxYy0wLjEzLDEuOC0wLjE1LDMuNjItMC4wNyw1LjQ2YzAuMDgsMS44NCwwLjI3LDMuNjUsMC41NSw1LjQzbDExLjYtMC41MQoJYzAuMDYsMC4zLDAuMTIsMC42LDAuMTksMC45YzAuOTksNC40OCwyLjc5LDguNTgsNS4yLDEyLjE5bC04LjU1LDcuODRjMS4wNiwxLjQ2LDIuMjEsMi44NywzLjQ1LDQuMjMKCWMxLjI1LDEuMzYsMi41NSwyLjYzLDMuOTEsMy44MWw4LjU0LTcuODNjMy43LDIuOTgsNy45Nyw1LjIzLDEyLjU1LDYuNThsLTEuNTEsMTEuNDZjMS43NSwwLjQ0LDMuNTQsMC43OCw1LjM2LDEuMDIKCWMxLjgzLDAuMjQsMy42NSwwLjM3LDUuNDUsMC40bDEuNS0xMS40MmMyLjM2LTAuMDQsNC43NS0wLjMyLDcuMTUtMC44NWMyLjM1LTAuNTIsNC42LTEuMjcsNi43My0yLjJsNi4xOSw5LjcyCgljMS42Mi0wLjc5LDMuMjEtMS42OCw0Ljc3LTIuNjdjMS41Ni0wLjk5LDMuMDMtMi4wNiw0LjQzLTMuMTlsLTYuMTktOS43MWMzLjYtMy4xNiw2LjU0LTcsOC42NC0xMS4yN2wxMS4wMSwzLjQ3CgljMC43My0xLjY1LDEuMzgtMy4zNSwxLjk0LTUuMTFzMS0zLjUzLDEuMzQtNS4yOWwtMTEtMy40N0MzOTYuOTEsMzQ5LjM1LDM5Ni44LDM0NC44NCwzOTUuOCwzNDAuMzJ6IE0zNjUuOTksMzcyLjY1CgljLTEzLjUxLDMtMjYuOTUtNS41Ni0yOS45NS0xOS4wN2MtMy0xMy41MSw1LjU2LTI2Ljk1LDE5LjA3LTI5Ljk1YzEzLjUxLTMsMjYuOTUsNS41NiwyOS45NSwxOS4wNwoJQzM4OC4wNiwzNTYuMjIsMzc5LjUxLDM2OS42NSwzNjUuOTksMzcyLjY1eiIvPgo8Y2lyY2xlIGN4PSIzNjAuNTgiIGN5PSIzNDguMjEiIHI9IjIwLjMiLz4KPGc+Cgk8bGluZSBjbGFzcz0ic3QwIiB4MT0iMzYwLjU4IiB5MT0iMzI4LjcyIiB4Mj0iMzYwLjU4IiB5Mj0iMzIwLjg5Ii8+Cgk8bGluZSBjbGFzcz0ic3QwIiB4MT0iMzYwLjU4IiB5MT0iMzc0Ljg1IiB4Mj0iMzYwLjU4IiB5Mj0iMzY3LjAyIi8+Cgk8bGluZSBjbGFzcz0ic3QwIiB4MT0iMzc5LjcyIiB5MT0iMzQ3Ljg3IiB4Mj0iMzg3LjU2IiB5Mj0iMzQ3Ljg3Ii8+Cgk8bGluZSBjbGFzcz0ic3QwIiB4MT0iMzMzLjYiIHkxPSIzNDcuODciIHgyPSIzNDEuNDMiIHkyPSIzNDcuODciLz4KPC9nPgo8cGF0aCBkPSJNNTQwLjEyLDI1MC4yMUw1MzEuMzYsMjIwYy0wLjQxLTEuNDMtMS45MS0yLjI1LTMuMzMtMS44M2wtOS4zOCwyLjcyYy0zLjEtNS4wNy02LjgtOS42Ni0xMC45OC0xMy43bDQuNzEtOC41NgoJYzAuNzItMS4zLDAuMjQtMi45NC0xLjA2LTMuNjVsLTI3LjU2LTE1LjE2Yy0xLjMtMC43Mi0yLjk0LTAuMjQtMy42NSwxLjA2bC00LjcxLDguNTZjLTUuNjUtMS4zNy0xMS41MS0yLjAzLTE3LjQ1LTEuOTNsLTIuNzItOS4zOAoJYy0wLjQxLTEuNDMtMS45MS0yLjI1LTMuMzMtMS44M2wtMzAuMjEsOC43N2MtMS40MywwLjQxLTIuMjUsMS45MS0xLjgzLDMuMzNsMi43Miw5LjM4Yy01LjA3LDMuMS05LjY2LDYuOC0xMy43LDEwLjk4bC04LjU2LTQuNzEKCWMtMS4zLTAuNzItMi45NC0wLjI0LTMuNjUsMS4wNmwtMTUuMTYsMjcuNTZjLTAuNzIsMS4zLTAuMjQsMi45NCwxLjA2LDMuNjVsOC41Niw0LjcxYy0xLjM3LDUuNjUtMi4wMywxMS41MS0xLjkzLDE3LjQ1bC05LjM4LDIuNzIKCWMtMS40MywwLjQxLTIuMjUsMS45MS0xLjgzLDMuMzNsOC43NywzMC4yMWMwLjQxLDEuNDMsMS45MSwyLjI1LDMuMzMsMS44M2w5LjM4LTIuNzJjMy4xLDUuMDcsNi44LDkuNjYsMTAuOTgsMTMuN2wtNC43MSw4LjU2CgljLTAuNzIsMS4zLTAuMjQsMi45NCwxLjA2LDMuNjVsMjcuNTYsMTUuMTZjMS4zLDAuNzIsMi45NCwwLjI0LDMuNjUtMS4wNmw0LjcxLTguNTZjNS42NSwxLjM3LDExLjUxLDIuMDMsMTcuNDUsMS45M2wyLjcyLDkuMzgKCWMwLjQxLDEuNDMsMS45MSwyLjI1LDMuMzMsMS44M2wzMC4yMS04Ljc3YzEuNDMtMC40MSwyLjI1LTEuOTEsMS44My0zLjMzbC0yLjcyLTkuMzhjNS4wNy0zLjEsOS42Ni02LjgsMTMuNy0xMC45OGw4LjU2LDQuNzEKCWMxLjMsMC43MiwyLjk0LDAuMjQsMy42NS0xLjA2bDE1LjE2LTI3LjU2YzAuNzItMS4zLDAuMjQtMi45NC0xLjA2LTMuNjVsLTguNTYtNC43MWMxLjM3LTUuNjUsMi4wMy0xMS41MSwxLjkzLTE3LjQ1bDkuMzgtMi43MgoJQzUzOS43MiwyNTMuMTMsNTQwLjU0LDI1MS42NCw1NDAuMTIsMjUwLjIxeiBNNDU5LjA1LDMyMC41OGMtMzQuOTEsMC02My4yMS0yOC4zLTYzLjIxLTYzLjIxczI4LjMtNjMuMjEsNjMuMjEtNjMuMjEKCXM2My4yMSwyOC4zLDYzLjIxLDYzLjIxUzQ5My45NiwzMjAuNTgsNDU5LjA1LDMyMC41OHoiLz4KPGc+Cgk8Zz4KCQk8Y2lyY2xlIGNsYXNzPSJzdDEiIGN4PSI0NTkuMDUiIGN5PSIyNTcuMzciIHI9IjU1LjQ3Ii8+CgkJPGNpcmNsZSBjbGFzcz0ic3QxIiBjeD0iNDU5LjA1IiBjeT0iMjU3LjM3IiByPSI0NS41NCIvPgoJPC9nPgoJPGc+CgkJPGxpbmUgY2xhc3M9InN0MiIgeDE9IjQ1OS4wNSIgeTE9IjIxMSIgeDI9IjQ1OS4wNSIgeTI9IjE5MS4wOSIvPgoJCTxsaW5lIGNsYXNzPSJzdDIiIHgxPSI0NTkuMDUiIHkxPSIzMjMuNjQiIHgyPSI0NTkuMDUiIHkyPSIzMDMuNzQiLz4KCQk8bGluZSBjbGFzcz0ic3QyIiB4MT0iNDI2LjI2IiB5MT0iMjI0LjU4IiB4Mj0iNDEyLjE4IiB5Mj0iMjEwLjUiLz4KCQk8bGluZSBjbGFzcz0ic3QyIiB4MT0iNTA1LjkxIiB5MT0iMzA0LjIzIiB4Mj0iNDkxLjgzIiB5Mj0iMjkwLjE1Ii8+CgkJPGxpbmUgY2xhc3M9InN0MiIgeDE9IjUwNS40MiIgeTE9IjI1Ny4zNyIgeDI9IjUyNS4zMiIgeTI9IjI1Ny4zNyIvPgoJCTxsaW5lIGNsYXNzPSJzdDIiIHgxPSIzOTIuNzciIHkxPSIyNTcuMzciIHgyPSI0MTIuNjgiIHkyPSIyNTcuMzciLz4KCQk8bGluZSBjbGFzcz0ic3QyIiB4MT0iNDkxLjgzIiB5MT0iMjI0LjU4IiB4Mj0iNTA1LjkxIiB5Mj0iMjEwLjUiLz4KCQk8bGluZSBjbGFzcz0ic3QyIiB4MT0iNDEyLjE4IiB5MT0iMzA0LjIzIiB4Mj0iNDI2LjI2IiB5Mj0iMjkwLjE1Ii8+Cgk8L2c+CjwvZz4KPHBhdGggZD0iTTI5OS41NCwzNDIuNDZjLTAuMS0wLjQtMC4yLTAuOC0wLjMtMS4xOWwxNS4xLTYuNmMtMC43Ni0yLjQ1LTEuNjUtNC44OS0yLjctNy4zYy0xLjA1LTIuNDEtMi4yMy00LjcyLTMuNTItNi45NAoJbC0xNS4xMSw2LjZjLTMuNjgtNS43OS04LjQ0LTEwLjcyLTEzLjk1LTE0LjU3bDcuMzYtMTQuODRjLTIuMTYtMS4zOS00LjQxLTIuNjgtNi43Ni0zLjg1Yy0yLjM1LTEuMTctNC43NC0yLjE4LTcuMTYtMy4wNQoJbC03LjM2LDE0Ljg0Yy02LjM0LTIuMDMtMTMuMTItMi44NS0yMC4wMS0yLjI1bC0zLjktMTYuMTNjLTIuNTUsMC4zMi01LjEsMC43OC03LjY2LDEuNGMtMi41NSwwLjYyLTUuMDQsMS4zOC03LjQ1LDIuMjZsMy45LDE2LjEzCgljLTYuNCwyLjYyLTEyLjA1LDYuNDQtMTYuNzUsMTEuMTRsLTEzLjM4LTkuODZjLTEuNzUsMS44OC0zLjQxLDMuODctNC45Nyw1Ljk5Yy0xLjU2LDIuMTItMi45Nyw0LjI5LTQuMjUsNi41MmwxMy4zOCw5Ljg2CgljLTMuMTMsNS45My01LjExLDEyLjQ3LTUuNzQsMTkuMjlsLTE2LjU1LDEuMDRjLTAuMTMsMi41Ni0wLjEyLDUuMTYsMC4wNSw3Ljc4YzAuMTcsMi42MiwwLjQ4LDUuMiwwLjkzLDcuNzNsMTYuNTItMS4wNAoJYzAuMDksMC40MiwwLjE5LDAuODUsMC4yOSwxLjI3YzEuNTQsNi4zNiw0LjIxLDEyLjE1LDcuNzQsMTcuMjNsLTExLjk3LDExLjRjMS41NSwyLjA1LDMuMjIsNC4wMyw1LjA0LDUuOTMKCWMxLjgxLDEuOSwzLjcxLDMuNjcsNS42OCw1LjMybDExLjk1LTExLjM5YzUuMzUsNC4xNSwxMS40OSw3LjI0LDE4LjA3LDkuMDNsLTEuODMsMTYuMzdjMi41LDAuNTcsNS4wNiwxLjAxLDcuNjcsMS4zMQoJYzIuNjEsMC4yOSw1LjIsMC40Myw3Ljc3LDAuNDJsMS44My0xNi4zMmMzLjM2LTAuMTMsNi43Ni0wLjU5LDEwLjE2LTEuNDFjMy4zNC0wLjgxLDYuNTItMS45Myw5LjUzLTMuMzJsOS4wOSwxMy42NwoJYzIuMjgtMS4xNyw0LjUzLTIuNDgsNi43Mi0zLjkzYzIuMTktMS40NSw0LjI2LTMuMDIsNi4yMi00LjY3bC05LjA5LTEzLjY3YzUuMDUtNC42LDkuMTItMTAuMTUsMTItMTYuMjlsMTUuNzgsNC42NAoJYzEtMi4zNiwxLjg4LTQuODEsMi42Mi03LjMzYzAuNzQtMi41MiwxLjMyLTUuMDUsMS43Ni03LjU4bC0xNS43Ni00LjY0QzMwMS4zNiwzNTUuMjgsMzAxLjA5LDM0OC44NiwyOTkuNTQsMzQyLjQ2eiBNMjU3LjI3LDM5Ny40MwoJYy0yNCw0LjQ4LTQ3LjA4LTExLjM1LTUxLjU1LTM1LjM1Yy00LjQ4LTI0LDExLjM1LTQ3LjA4LDM1LjM1LTUxLjU1YzI0LTQuNDcsNDcuMDgsMTEuMzUsNTEuNTUsMzUuMzVTMjgxLjI3LDM5Mi45NSwyNTcuMjcsMzk3LjQzegoJIi8+CjxnPgoJCgkJPGVsbGlwc2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4xOTkxIC0wLjk4IDAuOTggMC4xOTkxIC0xNDcuMzMzMiA1MjcuNjcyNSkiIGNsYXNzPSJzdDMiIGN4PSIyNDkuMTciIGN5PSIzNTMuOTgiIHJ4PSIxOS42NCIgcnk9IjE5LjY0Ii8+Cgk8Zz4KCQk8cGF0aCBkPSJNMjQ4LjI2LDMyMS4yM2MtMC41Mi0yLjc3LTMuMTktNC42LTUuOTYtNC4wOWMtMi43NywwLjUyLTQuNiwzLjE5LTQuMDksNS45NnMzLjE5LDQuNiw1Ljk2LDQuMDkKCQkJQzI0Ni45NSwzMjYuNjcsMjQ4Ljc3LDMyNCwyNDguMjYsMzIxLjIzeiIvPgoJCTxwYXRoIGQ9Ik0yMjUuMzcsMzMxLjQ2Yy0yLjMzLTEuNi01LjUxLTEtNy4xLDEuMzJjLTEuNiwyLjMzLTEsNS41MSwxLjMyLDcuMXM1LjUxLDEsNy4xLTEuMzIKCQkJQzIyOC4yOSwzMzYuMjQsMjI3LjY5LDMzMy4wNiwyMjUuMzcsMzMxLjQ2eiIvPgoJCTxwYXRoIGQ9Ik0yMTYuNDIsMzU0Ljg5Yy0yLjc3LDAuNTItNC42LDMuMTktNC4wOSw1Ljk2YzAuNTIsMi43NywzLjE5LDQuNiw1Ljk2LDQuMDljMi43Ny0wLjUyLDQuNi0zLjE5LDQuMDktNS45NgoJCQlDMjIxLjg2LDM1Ni4yLDIxOS4xOSwzNTQuMzcsMjE2LjQyLDM1NC44OXoiLz4KCQk8cGF0aCBkPSJNMjI2LjY1LDM3Ny43OGMtMS42LDIuMzMtMSw1LjUxLDEuMzIsNy4xczUuNTEsMSw3LjEtMS4zMmMxLjYtMi4zMywxLTUuNTEtMS4zMi03LjEKCQkJQzIzMS40MywzNzQuODYsMjI4LjI1LDM3NS40NSwyMjYuNjUsMzc3Ljc4eiIvPgoJCTxwYXRoIGQ9Ik0yNTAuMDgsMzg2LjcyYzAuNTIsMi43NywzLjE5LDQuNiw1Ljk2LDQuMDljMi43Ny0wLjUyLDQuNi0zLjE5LDQuMDktNS45NmMtMC41Mi0yLjc3LTMuMTktNC42LTUuOTYtNC4wOQoJCQlDMjUxLjM5LDM4MS4yOCwyNDkuNTYsMzgzLjk1LDI1MC4wOCwzODYuNzJ6Ii8+CgkJPHBhdGggZD0iTTI3Mi45NywzNzYuNDljMi4zMywxLjYsNS41MSwxLDcuMS0xLjMyYzEuNi0yLjMzLDEtNS41MS0xLjMyLTcuMWMtMi4zMy0xLjYtNS41MS0xLTcuMSwxLjMyCgkJCUMyNzAuMDUsMzcxLjcxLDI3MC42NCwzNzQuODksMjcyLjk3LDM3Ni40OXoiLz4KCQk8cGF0aCBkPSJNMjgxLjkyLDM1My4wN2MyLjc3LTAuNTIsNC42LTMuMTksNC4wOS01Ljk2Yy0wLjUyLTIuNzctMy4xOS00LjYtNS45Ni00LjA5Yy0yLjc3LDAuNTItNC42LDMuMTktNC4wOSw1Ljk2CgkJCVMyNzkuMTQsMzUzLjU4LDI4MS45MiwzNTMuMDd6Ii8+CgkJPHBhdGggZD0iTTI3MS42OCwzMzAuMThjMS42LTIuMzMsMS01LjUxLTEuMzItNy4xYy0yLjMzLTEuNi01LjUxLTEtNy4xLDEuMzJjLTEuNiwyLjMzLTEsNS41MSwxLjMyLDcuMQoJCQlTMjcwLjA5LDMzMi41LDI3MS42OCwzMzAuMTh6Ii8+Cgk8L2c+CjwvZz4KPHJlY3QgeD0iMTQ4LjY5IiB5PSIyMzYuNDMiIGNsYXNzPSJzdDQiIHdpZHRoPSIyMzcuNTYiIGhlaWdodD0iNTYuMDEiLz4KPHRleHQgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSAxNDguNjg5MyAyODAuNzg1KSIgY2xhc3M9InN0NSBzdDYiPlRVUklORyA8L3RleHQ+CjxyZWN0IHg9IjY5LjQ5IiB5PSIxNzIuOTgiIGNsYXNzPSJzdDQiIHdpZHRoPSIxNjEuMjgiIGhlaWdodD0iNTUuMTUiLz4KPHRleHQgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSA2OS40ODY2IDIxNy4zMzE0KSIgY2xhc3M9InN0NSBzdDYiPkFMQU48L3RleHQ+Cjwvc3ZnPgo="
+            alt="Logo" style="width:40px;" class="rounded-pill border border-secondary-subtle">
+        </a>
+        <a class="navbar-brand">
+          <bold>Turing-Maschinen-Simulator</bold>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="./../../index.html">Zurück</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container-fluid mt-2">
+    <h2>Nutzungsbedingungen</h2>
+    <p></p>
+  </div>
+  <div class="container-fluid mt-2">
+    <h4>1. Nutzungsbedingungen in einfachen Worten</h4>
+    <p>Die Nutzung des Turing-Maschinen-Simulators ist komplett kostenlos. Es gibt keine versteckten Kosten oder
+      kostenpflichtigen Inhalte. Ich gebe mir Mühe, dass alles zuverlässig funktioniert, kann jedoch nicht garantieren,
+      dass die Website immer verfügbar ist oder dass alles stets fehlerfrei läuft. Sollte es zu Problemen kommen oder
+      etwas nicht funktionieren, übernehme ich keine Verantwortung für mögliche Verluste (aber welche könnten das schon
+      sein? 😊). Alle Inhalte auf dieser Website – also Texte, Bilder, Quellcode und das Tool – habe ich selbst
+      erstellt, gekennzeichnet oder sie basieren auf freier Software. Bitte halte dich an die geltenden Urheberrechte
+      unter der angegebenen Lizenz, die du auf meiner GitHub-Seite findest (<a
+        href="https://github.com/philbruck">GitHub:philbuck</a>).
+    </p>
+  </div>
+  <div class="container-fluid mt-2">
+    <h4>2. Kostenfreiheit der Nutzung</h4>
+    <p>Die Nutzung sämtlicher auf dieser Website bereitgestellten Inhalte und Funktionen erfolgt unentgeltlich. Es gibt
+      keine kostenpflichtigen Angebote oder versteckten Gebühren.
+    </p>
+  </div>
+  </div>
+  <div class="container-fluid mt-2">
+    <h4>3. Verfügbarkeit und Funktionalität</h4>
+    <p>Es wird keine Gewähr für die permanente technische Verfügbarkeit, die fehlerfreie Funktion oder die
+      Vollständigkeit der bereitgestellten Inhalte und Funktionen übernommen. Die Nutzung erfolgt ausdrücklich auf
+      eigenes Risiko. Eine Haftung für direkte oder indirekte Schäden, die aus der Nutzung oder der zeitweisen
+      Nichtverfügbarkeit der Website entstehen, ist ausgeschlossen.
+    </p>
+  </div>
+  </div>
+  <div class="container-fluid mt-2">
+    <h4>4. Urheber- und Nutzungsrechte</h4>
+    <p>Sämtliche Inhalte dieser Website, insbesondere Texte, Grafiken, Quellcodes und Softwarebestandteile, unterliegen
+      dem Schutz des Urheberrechts. Eine Vervielfältigung, Verbreitung, Bearbeitung oder sonstige Nutzung über den rein
+      privaten, nicht kommerziellen Gebrauch hinaus ist nur unter Beachtung der geltenden Lizenz erlaubt. Die Software
+      wird unter der Apache License 2.0 bereitgestellt (<a href="https://github.com/philbruck">GitHub:philbuck</a>).
+    </p>
+  </div>
+  </div>
+  <div class="container-fluid mt-2">
+    <h4>5. Änderung der Nutzungsbedingungen</h4>
+    <p>Es wird sich das Recht vorbehalten, diese Nutzungsbedingungen jederzeit ohne gesonderte Ankündigung zu ändern.
+      Die jeweils aktuelle Fassung ist auf dieser Website abrufbar und gilt mit deren Veröffentlichung als verbindlich.
+    </p>
+  </div>
+  <br>
+
+  <footer class="bg-light border-top pt-1 pb-2 d-flex flex-column">
+    <div class="d-flex flex-row justify-content-center" style="font-size: 80%">
+      <div>Copyright © 2025 philbruck</div>
+    </div>
+    <div class="d-flex flex-row justify-content-center" style="font-size: 60%">
+      <a class="link-dark link-opacity-50-hover link-underline link-underline-opacity-0"
+        href="#">Nutzungsbedingungen</a>
+      <div class="mx-1">|</div>
+      <a class="link-dark link-opacity-50-hover link-underline link-underline-opacity-0"
+        href="./data-privacy.html">Datenschutz</a>
+      <div class="mx-1">|</div>
+      <a class="link-dark link-opacity-50-hover link-underline link-underline-opacity-0" href="./thanks-to.html">Danke
+        an!</a>
+      <div class="mx-1">|</div>
+      <a class="link-dark link-opacity-50-hover link-underline link-underline-opacity-0"
+        href="https://github.com/philbruck" target="blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </footer>
+</body>
+
+</html>

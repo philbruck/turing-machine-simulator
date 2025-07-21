@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<!--
+# -*- coding: html, css, javascript -*-
+*****************************************************************************
+Copyright (c) 2025 philbruck
+
+date: 2025-07-18
+author: philbruck <kontakt@philbruck.de> [please only pgp-encrypted, see my GitHub]
+contributors: -
+version: 1.0.0
+*****************************************************************************
+This program is a (single file) turing machine simulator. You can define your own transition rules, enter the start band,
+define the start state and define the end states. After initialization, the turing program is executed visually.
+-->
+<html lang="de">
+
+<head>
+  <title>Turing-Maschinen-Simulator</title>
+
+  <meta charset="utf-8">
+  <meta name="author" content="philbruck">
+  <meta name="description"
+    content="Free Online Turing Machine Simulator. Create your own programs and execute them on a Turing machine">
+  <meta name="keywords"
+    content="Turing, Alan Turing, Machine, Turing-Machine, Turing machine, Turing-Machine-Simulator, Turing machine simulator, turing machine, turing-machine-simulator">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon"
+    href="data:image/x-icon;base64,AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAACMuAAAjLgAAAAAAAAAAAAD//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////v7+//7+/v///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////v7+//////+7u7v/p6en/+3t7f/e3t7////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////FxcX/hISE/4eHh/95eXn/cXFx/4WFhf///////////+zs7P/j4+P/9vb2//39/f///////////////////////////////////////////////////////////////////////////////////////////////////////////83Nzf9+fn7/urq6/8LCwv+5ubn/hISE/6urq/+6urr/d3d3/1VVVf94eHj/7+/v///////////////////////////////////////////////////////////////////////////////////////////////////////X19f/ZGRk/6qqqv/Nzc3/5ubm/8fHx/+cnJz/enp6/3h4eP84ODj/JiYm/0FBQf+Ojo7/+/v7//////////////////////////////////////////////////////////////////////////////////////////////////Hx8f+ioqL/tLS0/8rKyv/i4uL/ycnJ/5KSkv+UlJT/YmJi/y4uLv8ICAj/NDQ0/4yMjP/8/Pz/8vLy//Hx8f/X19f/9fX1/////////////////////////////////////////////////////////////////////////////////5ycnP9ubm7/wsLC/8HBwf+wsLD/iYmJ/5KSkv+Li4v/RkZG/zY2Nv9RUVH/pKSk/3p6ev9jY2P/cXFx/zk5Of96enr/+fn5////////////////////////////////////////////////////////////////////////////1NTU/8jIyP9sbGz/lJSU/2FhYf+7u7v///////T09P+urq7/nJyc/7CwsP/AwMD/PT09/3R0dP9nZ2f/eXl5/2BgYP9ubm7/zs7O////////////////////////////////////////////////////////////9/f3//j4+P/u7u7/4uLi/6Kiov/c3Nz/xcXF/9nZ2f/19fX/7e3t/+rq6v/k5OT/rKys/1dXV/9ra2v/xMTE//Dw8P/g4OD/gICA/0xMTP9tbW3//f39///////////////////////////////////////////////////////V1dX/0tLS/7i4uP+2trb/ra2t/7CwsP+2trb/sLCw/62trf+UlJT/tbW1/7Kysv9YWFj/S0tL/6ysrP/////////////////X19f/aWlp/5SUlP///////////////////////////////////////////////////////v7+/7+/v/+5ubn/vLy8/8vLy/+cnJz/kpKS/7i4uP+jo6P/lJSU/6ioqP+wsLD/zs7O/7S0tP9UVFT/ra2t/////////////////97e3v9cXFz/WVlZ/+3t7f////////////////////////////7+/v/+/v7//v7+//z8/P/19fX/09PT/9HR0f/m5ub/7+/v/93d3f/V1dX/7Ozs/+Hh4f/j4+P/7Ozs/+Li4v/Z2dn/p6en/09PT/+Ghob/4+Pj///////4+Pj/pKSk/2ZmZv9WVlb/9fX1////////////////////////////5ubm/8jIyP/CwsL/sLCw/8DAwP/Jycn/xcXF/8jIyP+4uLj/4eHh///////////////////////////////////////g4OD/U1NT/0xMTP+JiYn/lZWV/5aWlv9UVFT/cnJy/9fX1//////////////////////////////////x8fH/k5OT/6Wlpf+4uLj/8vLy/5iYmP+jo6P/oKCg/5KSkv/Z2dn///////////////////////////////////////7+/v/v7+//mZmZ/0BAQP9DQ0P/YmJi/zw8PP+tra3////////////////////////////////////////////ExMT/2NjY/9TU1P//////ycnJ/9XV1f+4uLj/zc3N/+jo6P/////////////////////////////////////////////////r6+v/qamp/7a2tv/Z2dn/09PT//39/f////////////////////////////////////////////7+/v/+/v7////////////+/v7//v7+//7+/v//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+    type="image/x-icon">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+  <header class="sticky-top">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img
+            src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1OTUuMjggNTk1LjI4IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1OTUuMjggNTk1LjI4OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6bm9uZTtzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6NDtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9Cgkuc3Qxe2ZpbGw6bm9uZTtzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6NTtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9Cgkuc3Qye2ZpbGw6bm9uZTtzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6OTtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9Cgkuc3Qze2ZpbGw6bm9uZTtzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6MztzdHJva2UtbWl0ZXJsaW1pdDoxMDt9Cgkuc3Q0e2ZpbGw6bm9uZTt9Cgkuc3Q1e2ZvbnQtZmFtaWx5OidJQk1QbGV4TW9uby1Cb2xkJzt9Cgkuc3Q2e2ZvbnQtc2l6ZTo1OS45MzQxcHg7fQo8L3N0eWxlPgo8cGF0aCBkPSJNMzk1LjgsMzQwLjMyYy0wLjA2LTAuMjgtMC4xMy0wLjU2LTAuMi0wLjg0bDEwLjY4LTQuNDNjLTAuNS0xLjczLTEuMDktMy40NS0xLjgtNS4xNmMtMC43MS0xLjctMS41LTMuMzQtMi4zOC00LjkyCglsLTEwLjY5LDQuNDNjLTIuNS00LjExLTUuNzgtNy42NC05LjU5LTEwLjQxbDUuMzctMTAuMzFjLTEuNDktMS4wMS0zLjA2LTEuOTQtNC42OS0yLjc5Yy0xLjY0LTAuODUtMy4zLTEuNTktNC45OC0yLjI0bC01LjM3LDEwLjMxCgljLTQuNDItMS41MS05LjE3LTIuMTctMTQuMDEtMS44NWwtMi41Mi0xMS4zN2MtMS43OSwwLjE5LTMuNTksMC40OC01LjM5LDAuODhzLTMuNTUsMC45LTUuMjUsMS40OWwyLjUyLDExLjM3CgljLTQuNTIsMS43NS04LjU0LDQuMzYtMTEuOSw3LjU5bC05LjI2LTcuMWMtMS4yNSwxLjMtMi40NCwyLjY3LTMuNTcsNC4xNGMtMS4xMiwxLjQ2LTIuMTQsMi45Ny0zLjA3LDQuNTJsOS4yNSw3LjEKCWMtMi4yNyw0LjEyLTMuNzYsOC42OC00LjI5LDEzLjQ1bC0xMS42MywwLjUxYy0wLjEzLDEuOC0wLjE1LDMuNjItMC4wNyw1LjQ2YzAuMDgsMS44NCwwLjI3LDMuNjUsMC41NSw1LjQzbDExLjYtMC41MQoJYzAuMDYsMC4zLDAuMTIsMC42LDAuMTksMC45YzAuOTksNC40OCwyLjc5LDguNTgsNS4yLDEyLjE5bC04LjU1LDcuODRjMS4wNiwxLjQ2LDIuMjEsMi44NywzLjQ1LDQuMjMKCWMxLjI1LDEuMzYsMi41NSwyLjYzLDMuOTEsMy44MWw4LjU0LTcuODNjMy43LDIuOTgsNy45Nyw1LjIzLDEyLjU1LDYuNThsLTEuNTEsMTEuNDZjMS43NSwwLjQ0LDMuNTQsMC43OCw1LjM2LDEuMDIKCWMxLjgzLDAuMjQsMy42NSwwLjM3LDUuNDUsMC40bDEuNS0xMS40MmMyLjM2LTAuMDQsNC43NS0wLjMyLDcuMTUtMC44NWMyLjM1LTAuNTIsNC42LTEuMjcsNi43My0yLjJsNi4xOSw5LjcyCgljMS42Mi0wLjc5LDMuMjEtMS42OCw0Ljc3LTIuNjdjMS41Ni0wLjk5LDMuMDMtMi4wNiw0LjQzLTMuMTlsLTYuMTktOS43MWMzLjYtMy4xNiw2LjU0LTcsOC42NC0xMS4yN2wxMS4wMSwzLjQ3CgljMC43My0xLjY1LDEuMzgtMy4zNSwxLjk0LTUuMTFzMS0zLjUzLDEuMzQtNS4yOWwtMTEtMy40N0MzOTYuOTEsMzQ5LjM1LDM5Ni44LDM0NC44NCwzOTUuOCwzNDAuMzJ6IE0zNjUuOTksMzcyLjY1CgljLTEzLjUxLDMtMjYuOTUtNS41Ni0yOS45NS0xOS4wN2MtMy0xMy41MSw1LjU2LTI2Ljk1LDE5LjA3LTI5Ljk1YzEzLjUxLTMsMjYuOTUsNS41NiwyOS45NSwxOS4wNwoJQzM4OC4wNiwzNTYuMjIsMzc5LjUxLDM2OS42NSwzNjUuOTksMzcyLjY1eiIvPgo8Y2lyY2xlIGN4PSIzNjAuNTgiIGN5PSIzNDguMjEiIHI9IjIwLjMiLz4KPGc+Cgk8bGluZSBjbGFzcz0ic3QwIiB4MT0iMzYwLjU4IiB5MT0iMzI4LjcyIiB4Mj0iMzYwLjU4IiB5Mj0iMzIwLjg5Ii8+Cgk8bGluZSBjbGFzcz0ic3QwIiB4MT0iMzYwLjU4IiB5MT0iMzc0Ljg1IiB4Mj0iMzYwLjU4IiB5Mj0iMzY3LjAyIi8+Cgk8bGluZSBjbGFzcz0ic3QwIiB4MT0iMzc5LjcyIiB5MT0iMzQ3Ljg3IiB4Mj0iMzg3LjU2IiB5Mj0iMzQ3Ljg3Ii8+Cgk8bGluZSBjbGFzcz0ic3QwIiB4MT0iMzMzLjYiIHkxPSIzNDcuODciIHgyPSIzNDEuNDMiIHkyPSIzNDcuODciLz4KPC9nPgo8cGF0aCBkPSJNNTQwLjEyLDI1MC4yMUw1MzEuMzYsMjIwYy0wLjQxLTEuNDMtMS45MS0yLjI1LTMuMzMtMS44M2wtOS4zOCwyLjcyYy0zLjEtNS4wNy02LjgtOS42Ni0xMC45OC0xMy43bDQuNzEtOC41NgoJYzAuNzItMS4zLDAuMjQtMi45NC0xLjA2LTMuNjVsLTI3LjU2LTE1LjE2Yy0xLjMtMC43Mi0yLjk0LTAuMjQtMy42NSwxLjA2bC00LjcxLDguNTZjLTUuNjUtMS4zNy0xMS41MS0yLjAzLTE3LjQ1LTEuOTNsLTIuNzItOS4zOAoJYy0wLjQxLTEuNDMtMS45MS0yLjI1LTMuMzMtMS44M2wtMzAuMjEsOC43N2MtMS40MywwLjQxLTIuMjUsMS45MS0xLjgzLDMuMzNsMi43Miw5LjM4Yy01LjA3LDMuMS05LjY2LDYuOC0xMy43LDEwLjk4bC04LjU2LTQuNzEKCWMtMS4zLTAuNzItMi45NC0wLjI0LTMuNjUsMS4wNmwtMTUuMTYsMjcuNTZjLTAuNzIsMS4zLTAuMjQsMi45NCwxLjA2LDMuNjVsOC41Niw0LjcxYy0xLjM3LDUuNjUtMi4wMywxMS41MS0xLjkzLDE3LjQ1bC05LjM4LDIuNzIKCWMtMS40MywwLjQxLTIuMjUsMS45MS0xLjgzLDMuMzNsOC43NywzMC4yMWMwLjQxLDEuNDMsMS45MSwyLjI1LDMuMzMsMS44M2w5LjM4LTIuNzJjMy4xLDUuMDcsNi44LDkuNjYsMTAuOTgsMTMuN2wtNC43MSw4LjU2CgljLTAuNzIsMS4zLTAuMjQsMi45NCwxLjA2LDMuNjVsMjcuNTYsMTUuMTZjMS4zLDAuNzIsMi45NCwwLjI0LDMuNjUtMS4wNmw0LjcxLTguNTZjNS42NSwxLjM3LDExLjUxLDIuMDMsMTcuNDUsMS45M2wyLjcyLDkuMzgKCWMwLjQxLDEuNDMsMS45MSwyLjI1LDMuMzMsMS44M2wzMC4yMS04Ljc3YzEuNDMtMC40MSwyLjI1LTEuOTEsMS44My0zLjMzbC0yLjcyLTkuMzhjNS4wNy0zLjEsOS42Ni02LjgsMTMuNy0xMC45OGw4LjU2LDQuNzEKCWMxLjMsMC43MiwyLjk0LDAuMjQsMy42NS0xLjA2bDE1LjE2LTI3LjU2YzAuNzItMS4zLDAuMjQtMi45NC0xLjA2LTMuNjVsLTguNTYtNC43MWMxLjM3LTUuNjUsMi4wMy0xMS41MSwxLjkzLTE3LjQ1bDkuMzgtMi43MgoJQzUzOS43MiwyNTMuMTMsNTQwLjU0LDI1MS42NCw1NDAuMTIsMjUwLjIxeiBNNDU5LjA1LDMyMC41OGMtMzQuOTEsMC02My4yMS0yOC4zLTYzLjIxLTYzLjIxczI4LjMtNjMuMjEsNjMuMjEtNjMuMjEKCXM2My4yMSwyOC4zLDYzLjIxLDYzLjIxUzQ5My45NiwzMjAuNTgsNDU5LjA1LDMyMC41OHoiLz4KPGc+Cgk8Zz4KCQk8Y2lyY2xlIGNsYXNzPSJzdDEiIGN4PSI0NTkuMDUiIGN5PSIyNTcuMzciIHI9IjU1LjQ3Ii8+CgkJPGNpcmNsZSBjbGFzcz0ic3QxIiBjeD0iNDU5LjA1IiBjeT0iMjU3LjM3IiByPSI0NS41NCIvPgoJPC9nPgoJPGc+CgkJPGxpbmUgY2xhc3M9InN0MiIgeDE9IjQ1OS4wNSIgeTE9IjIxMSIgeDI9IjQ1OS4wNSIgeTI9IjE5MS4wOSIvPgoJCTxsaW5lIGNsYXNzPSJzdDIiIHgxPSI0NTkuMDUiIHkxPSIzMjMuNjQiIHgyPSI0NTkuMDUiIHkyPSIzMDMuNzQiLz4KCQk8bGluZSBjbGFzcz0ic3QyIiB4MT0iNDI2LjI2IiB5MT0iMjI0LjU4IiB4Mj0iNDEyLjE4IiB5Mj0iMjEwLjUiLz4KCQk8bGluZSBjbGFzcz0ic3QyIiB4MT0iNTA1LjkxIiB5MT0iMzA0LjIzIiB4Mj0iNDkxLjgzIiB5Mj0iMjkwLjE1Ii8+CgkJPGxpbmUgY2xhc3M9InN0MiIgeDE9IjUwNS40MiIgeTE9IjI1Ny4zNyIgeDI9IjUyNS4zMiIgeTI9IjI1Ny4zNyIvPgoJCTxsaW5lIGNsYXNzPSJzdDIiIHgxPSIzOTIuNzciIHkxPSIyNTcuMzciIHgyPSI0MTIuNjgiIHkyPSIyNTcuMzciLz4KCQk8bGluZSBjbGFzcz0ic3QyIiB4MT0iNDkxLjgzIiB5MT0iMjI0LjU4IiB4Mj0iNTA1LjkxIiB5Mj0iMjEwLjUiLz4KCQk8bGluZSBjbGFzcz0ic3QyIiB4MT0iNDEyLjE4IiB5MT0iMzA0LjIzIiB4Mj0iNDI2LjI2IiB5Mj0iMjkwLjE1Ii8+Cgk8L2c+CjwvZz4KPHBhdGggZD0iTTI5OS41NCwzNDIuNDZjLTAuMS0wLjQtMC4yLTAuOC0wLjMtMS4xOWwxNS4xLTYuNmMtMC43Ni0yLjQ1LTEuNjUtNC44OS0yLjctNy4zYy0xLjA1LTIuNDEtMi4yMy00LjcyLTMuNTItNi45NAoJbC0xNS4xMSw2LjZjLTMuNjgtNS43OS04LjQ0LTEwLjcyLTEzLjk1LTE0LjU3bDcuMzYtMTQuODRjLTIuMTYtMS4zOS00LjQxLTIuNjgtNi43Ni0zLjg1Yy0yLjM1LTEuMTctNC43NC0yLjE4LTcuMTYtMy4wNQoJbC03LjM2LDE0Ljg0Yy02LjM0LTIuMDMtMTMuMTItMi44NS0yMC4wMS0yLjI1bC0zLjktMTYuMTNjLTIuNTUsMC4zMi01LjEsMC43OC03LjY2LDEuNGMtMi41NSwwLjYyLTUuMDQsMS4zOC03LjQ1LDIuMjZsMy45LDE2LjEzCgljLTYuNCwyLjYyLTEyLjA1LDYuNDQtMTYuNzUsMTEuMTRsLTEzLjM4LTkuODZjLTEuNzUsMS44OC0zLjQxLDMuODctNC45Nyw1Ljk5Yy0xLjU2LDIuMTItMi45Nyw0LjI5LTQuMjUsNi41MmwxMy4zOCw5Ljg2CgljLTMuMTMsNS45My01LjExLDEyLjQ3LTUuNzQsMTkuMjlsLTE2LjU1LDEuMDRjLTAuMTMsMi41Ni0wLjEyLDUuMTYsMC4wNSw3Ljc4YzAuMTcsMi42MiwwLjQ4LDUuMiwwLjkzLDcuNzNsMTYuNTItMS4wNAoJYzAuMDksMC40MiwwLjE5LDAuODUsMC4yOSwxLjI3YzEuNTQsNi4zNiw0LjIxLDEyLjE1LDcuNzQsMTcuMjNsLTExLjk3LDExLjRjMS41NSwyLjA1LDMuMjIsNC4wMyw1LjA0LDUuOTMKCWMxLjgxLDEuOSwzLjcxLDMuNjcsNS42OCw1LjMybDExLjk1LTExLjM5YzUuMzUsNC4xNSwxMS40OSw3LjI0LDE4LjA3LDkuMDNsLTEuODMsMTYuMzdjMi41LDAuNTcsNS4wNiwxLjAxLDcuNjcsMS4zMQoJYzIuNjEsMC4yOSw1LjIsMC40Myw3Ljc3LDAuNDJsMS44My0xNi4zMmMzLjM2LTAuMTMsNi43Ni0wLjU5LDEwLjE2LTEuNDFjMy4zNC0wLjgxLDYuNTItMS45Myw5LjUzLTMuMzJsOS4wOSwxMy42NwoJYzIuMjgtMS4xNyw0LjUzLTIuNDgsNi43Mi0zLjkzYzIuMTktMS40NSw0LjI2LTMuMDIsNi4yMi00LjY3bC05LjA5LTEzLjY3YzUuMDUtNC42LDkuMTItMTAuMTUsMTItMTYuMjlsMTUuNzgsNC42NAoJYzEtMi4zNiwxLjg4LTQuODEsMi42Mi03LjMzYzAuNzQtMi41MiwxLjMyLTUuMDUsMS43Ni03LjU4bC0xNS43Ni00LjY0QzMwMS4zNiwzNTUuMjgsMzAxLjA5LDM0OC44NiwyOTkuNTQsMzQyLjQ2eiBNMjU3LjI3LDM5Ny40MwoJYy0yNCw0LjQ4LTQ3LjA4LTExLjM1LTUxLjU1LTM1LjM1Yy00LjQ4LTI0LDExLjM1LTQ3LjA4LDM1LjM1LTUxLjU1YzI0LTQuNDcsNDcuMDgsMTEuMzUsNTEuNTUsMzUuMzVTMjgxLjI3LDM5Mi45NSwyNTcuMjcsMzk3LjQzegoJIi8+CjxnPgoJCgkJPGVsbGlwc2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4xOTkxIC0wLjk4IDAuOTggMC4xOTkxIC0xNDcuMzMzMiA1MjcuNjcyNSkiIGNsYXNzPSJzdDMiIGN4PSIyNDkuMTciIGN5PSIzNTMuOTgiIHJ4PSIxOS42NCIgcnk9IjE5LjY0Ii8+Cgk8Zz4KCQk8cGF0aCBkPSJNMjQ4LjI2LDMyMS4yM2MtMC41Mi0yLjc3LTMuMTktNC42LTUuOTYtNC4wOWMtMi43NywwLjUyLTQuNiwzLjE5LTQuMDksNS45NnMzLjE5LDQuNiw1Ljk2LDQuMDkKCQkJQzI0Ni45NSwzMjYuNjcsMjQ4Ljc3LDMyNCwyNDguMjYsMzIxLjIzeiIvPgoJCTxwYXRoIGQ9Ik0yMjUuMzcsMzMxLjQ2Yy0yLjMzLTEuNi01LjUxLTEtNy4xLDEuMzJjLTEuNiwyLjMzLTEsNS41MSwxLjMyLDcuMXM1LjUxLDEsNy4xLTEuMzIKCQkJQzIyOC4yOSwzMzYuMjQsMjI3LjY5LDMzMy4wNiwyMjUuMzcsMzMxLjQ2eiIvPgoJCTxwYXRoIGQ9Ik0yMTYuNDIsMzU0Ljg5Yy0yLjc3LDAuNTItNC42LDMuMTktNC4wOSw1Ljk2YzAuNTIsMi43NywzLjE5LDQuNiw1Ljk2LDQuMDljMi43Ny0wLjUyLDQuNi0zLjE5LDQuMDktNS45NgoJCQlDMjIxLjg2LDM1Ni4yLDIxOS4xOSwzNTQuMzcsMjE2LjQyLDM1NC44OXoiLz4KCQk8cGF0aCBkPSJNMjI2LjY1LDM3Ny43OGMtMS42LDIuMzMtMSw1LjUxLDEuMzIsNy4xczUuNTEsMSw3LjEtMS4zMmMxLjYtMi4zMywxLTUuNTEtMS4zMi03LjEKCQkJQzIzMS40MywzNzQuODYsMjI4LjI1LDM3NS40NSwyMjYuNjUsMzc3Ljc4eiIvPgoJCTxwYXRoIGQ9Ik0yNTAuMDgsMzg2LjcyYzAuNTIsMi43NywzLjE5LDQuNiw1Ljk2LDQuMDljMi43Ny0wLjUyLDQuNi0zLjE5LDQuMDktNS45NmMtMC41Mi0yLjc3LTMuMTktNC42LTUuOTYtNC4wOQoJCQlDMjUxLjM5LDM4MS4yOCwyNDkuNTYsMzgzLjk1LDI1MC4wOCwzODYuNzJ6Ii8+CgkJPHBhdGggZD0iTTI3Mi45NywzNzYuNDljMi4zMywxLjYsNS41MSwxLDcuMS0xLjMyYzEuNi0yLjMzLDEtNS41MS0xLjMyLTcuMWMtMi4zMy0xLjYtNS41MS0xLTcuMSwxLjMyCgkJCUMyNzAuMDUsMzcxLjcxLDI3MC42NCwzNzQuODksMjcyLjk3LDM3Ni40OXoiLz4KCQk8cGF0aCBkPSJNMjgxLjkyLDM1My4wN2MyLjc3LTAuNTIsNC42LTMuMTksNC4wOS01Ljk2Yy0wLjUyLTIuNzctMy4xOS00LjYtNS45Ni00LjA5Yy0yLjc3LDAuNTItNC42LDMuMTktNC4wOSw1Ljk2CgkJCVMyNzkuMTQsMzUzLjU4LDI4MS45MiwzNTMuMDd6Ii8+CgkJPHBhdGggZD0iTTI3MS42OCwzMzAuMThjMS42LTIuMzMsMS01LjUxLTEuMzItNy4xYy0yLjMzLTEuNi01LjUxLTEtNy4xLDEuMzJjLTEuNiwyLjMzLTEsNS41MSwxLjMyLDcuMQoJCQlTMjcwLjA5LDMzMi41LDI3MS42OCwzMzAuMTh6Ii8+Cgk8L2c+CjwvZz4KPHJlY3QgeD0iMTQ4LjY5IiB5PSIyMzYuNDMiIGNsYXNzPSJzdDQiIHdpZHRoPSIyMzcuNTYiIGhlaWdodD0iNTYuMDEiLz4KPHRleHQgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSAxNDguNjg5MyAyODAuNzg1KSIgY2xhc3M9InN0NSBzdDYiPlRVUklORyA8L3RleHQ+CjxyZWN0IHg9IjY5LjQ5IiB5PSIxNzIuOTgiIGNsYXNzPSJzdDQiIHdpZHRoPSIxNjEuMjgiIGhlaWdodD0iNTUuMTUiLz4KPHRleHQgdHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgMSA2OS40ODY2IDIxNy4zMzE0KSIgY2xhc3M9InN0NSBzdDYiPkFMQU48L3RleHQ+Cjwvc3ZnPgo="
+            alt="Logo" style="width:40px;" class="rounded-pill border border-secondary-subtle">
+        </a>
+        <a class="navbar-brand">
+          <bold>Turing-Maschinen-Simulator</bold>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Info
+              </a>
+              <ul class="dropdown-menu">
+                <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop1">Turing-Maschine Informationen</button></li>
+                <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop2">Über diese Seite</button></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                &#127758
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="./Turing-machine-simulator-en.html">English</a></li>
+                <li><a class="dropdown-item" href="./Turing-machine-simulator-de.html">Deutsch</a></li>
+              </ul>
+            </li>
+          </ul>
+          <div class="d-felx ms-auto btn-group">
+            <button class="btn btn-sm btn-light border border-secondary-subtle" type="button"
+              onclick="location.reload()"><img
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNDEuNzMgMTQxLjczIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDEuNzMgMTQxLjczOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBvbHlnb24gcG9pbnRzPSI3MC44NywyMS40NSAyMi4xOSw2My42IDExOS41NCw2My42IAkiLz4KCTxyZWN0IHg9IjIyLjE5IiB5PSI3My42OCIgd2lkdGg9Ijk3LjM2IiBoZWlnaHQ9IjI0LjIiLz4KPC9nPgo8L3N2Zz4K"
+                width="16px" alt="eject"></button>
+            <button class="btn btn-sm btn-light border border-secondary-subtle" type="button" onclick="init()"><img
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNDEuNzMgMTQxLjczIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDEuNzMgMTQxLjczOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxyZWN0IHg9IjIxLjI2IiB5PSIxMS4yNiIgd2lkdGg9Ijk5LjIxIiBoZWlnaHQ9Ijk5LjIxIi8+Cjwvc3ZnPgo="
+                width="16px" alt="stop"></button>
+            <button class="btn btn-sm btn-light border border-secondary-subtle" type="button" onclick="pause()"><img
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNDEuNzMgMTQxLjczIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDEuNzMgMTQxLjczOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHJlY3QgeD0iMC42MyIgeT0iNDguNzYiIHRyYW5zZm9ybT0ibWF0cml4KC0xLjgzNjk3MGUtMTYgMSAtMSAtMS44MzY5NzBlLTE2IDExMS4xMDI1IDEwLjYyOTgpIiB3aWR0aD0iOTkuMjEiIGhlaWdodD0iMjQuMiIvPgoJPHJlY3QgeD0iNDEuODkiIHk9IjQ4Ljc2IiB0cmFuc2Zvcm09Im1hdHJpeCgtMS44MzY5NzBlLTE2IDEgLTEgLTEuODM2OTcwZS0xNiAxNTIuMzYyMSAtMzAuNjI5OCkiIHdpZHRoPSI5OS4yMSIgaGVpZ2h0PSIyNC4yIi8+CjwvZz4KPC9zdmc+Cg=="
+                width="16px" alt="pause"></button>
+            <button class="btn btn-sm btn-light border border-secondary-subtle" type="button" onclick="step()"><img
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNDEuNzMgMTQxLjczIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDEuNzMgMTQxLjczOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBvbHlnb24gcG9pbnRzPSI2NC45Myw2MC44NyAyMi43NywxMS4yNiAyMi43NywxMTAuNDcgCSIvPgoJPHJlY3QgeD0iMzQuMDIiIHk9IjUyLjU1IiB0cmFuc2Zvcm09Im1hdHJpeCgtMS44MzY5NzBlLTE2IDEgLTEgLTEuODM2OTcwZS0xNiAxNDQuNDk2IC0yMi43NjM3KSIgd2lkdGg9Ijk5LjIxIiBoZWlnaHQ9IjE2LjYzIi8+Cgk8cmVjdCB4PSI2MS4wNCIgeT0iNTIuNTUiIHRyYW5zZm9ybT0ibWF0cml4KC0xLjgzNjk3MGUtMTYgMSAtMSAtMS44MzY5NzBlLTE2IDE3MS41MTI1IC00OS43ODAyKSIgd2lkdGg9Ijk5LjIxIiBoZWlnaHQ9IjE2LjYzIi8+CjwvZz4KPC9zdmc+Cg=="
+                width="16px" alt="step"></button>
+            <button class="btn btn-sm btn-light border border-secondary-subtle" type="button" onclick="run()"><img
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNDEuNzMgMTQxLjczIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDEuNzMgMTQxLjczOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+Cjxwb2x5Z29uIHBvaW50cz0iMTA1LjkzLDYwLjg3IDM1LjgsMTEuNTIgMzUuOCwxMTAuMjIgIi8+Cjwvc3ZnPgo="
+                width="16px" alt="run"></button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Modal#1 -Turing-Maschine Informationen- -->
+  <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Turing-Maschine Informationen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>Eine Turing-Maschine ist ein theoretisches Modell, das von Alan Turing im Jahr 1936 entwickelt wurde. Sie
+            besteht
+            aus einem unendlichen Band, das in Felder unterteilt ist, auf denen Symbole aus einem bestimmten Alphabet
+            geschrieben werden können. Der Band fungiert als Speicher, und jedes Feld kann entweder leer sein oder ein
+            Symbol wie beispielsweise eine „1“ oder „0“ enthalten. Die Turing-Maschine hat außerdem einen
+            Schreib-Lese-Kopf, der sich
+            über das Band bewegen kann, um Symbole zu lesen, zu schreiben oder zu verändern.</div>
+          <br>
+          <div>Der Schreib-Lese-Kopf liest ein Symbol und führt eine Aktion basierend auf dem aktuellen Zustand der
+            Maschine aus. Die
+            Maschine ist immer in einem bestimmten Zustand, und für jeden Zustand gibt es eine Übergangsfunktion, die
+            angibt,
+            was passieren soll, wenn ein bestimmtes Symbol vom Schreib-Lese-Kopf gelesen wird. Diese Übergangsfunktion
+            entscheidet,
+            welches Symbol geschrieben wird, in welchen Zustand die Maschine übergeht und in welche Richtung sich der
+            Schreib-Lese-Kopf bewegen soll (nach links oder rechts).</div>
+          <br>
+          <div>Die Turing-Maschine arbeitet Schritt für Schritt, indem sie zunächst den Zustand und das gelesene Symbol
+            berücksichtigt und dann entsprechend der Übergangsfunktion eine Aktion ausführt. Diese Aktionen wiederholen
+            sich, bis die Maschine zum stillstand kommt, der anzeigt, dass die Berechnung beendet
+            ist. In diesem Zustand bleibt die Maschine stehen. Zudem ist möglich, dass die Maschine niemals zum
+            Stillstand kommt.</div>
+          <br>
+          <div>Das Besondere an der Turing-Maschine ist, dass sie ein theoretisches Modell für alle berechenbaren
+            Prozesse
+            bietet. Sie zeigt, dass alles, was von einer Turing-Maschine berechnet werden kann, als algorithmisch lösbar
+            gilt. Aber auch, dass es Probleme gibt, die von keiner Turing-Maschine gelöst werden können.</div>
+          <br>
+          <div>Insgesamt ist die Turing-Maschine ein fundamentales Konzept der Informatik, weil sie die Grenzen des
+            Berechnens und die Prinzipien der Algorithmenformulierung in ihrer einfachsten und abstraktesten Form
+            widerspiegelt. Sie hilft zu verstehen, was überhaupt als "berechenbar" gilt und was nicht.</div>
+          <br>
+          <div><strong>Formale Definition nach Hoffmann:</strong></div>
+          <div>
+            <div>Eine (deterministische) Turing-Maschine ist ein 7-Tupel (<i>S</i>, <i>Σ</i>, <i>П</i>, <i>δ</i>,
+              <i>s₀</i>, <i>◻</i>, <i>Ε</i>).
+            </div>
+            <div>Sie besteht aus:</div>
+            <ul>
+              <li>der endlichen Zustandsmenge <i>S</i>,</li>
+              <li>dem endlichen Eingabealphabet <i>Σ</i>,</li>
+              <li>dem Bandalphabet <i>П</i> mit <i>П ⊃ Σ</i>,</li>
+              <li>der Zustandsübergangsfunktion <i>δ : S × П → S × П × {←, →}</i>,</li>
+              <li>dem Startzustand <i>s₀</i>,</li>
+              <li>dem Blank-Symbol <i>◻</i> ∈ <i>П ∖ Σ</i>,</li>
+              <li>der Menge der Endzustände <i>Ε ⊆ S</i>.</li>
+            </ul>
+          </div>
+          <br>
+          <div><strong>Quelle:</strong></div>
+          <div>Hoffmann, D. W. (2022). Theoretische Informatik (5., aktualisierte Auflage). Carl Hanser Verlag München.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal#1 end-->
+  <!-- Modal#2 -Über diese Seite- -->
+  <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Über diese Seite</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>Auf dieser Seite steht dir ein Simulator zur Verfügung, mit dem du die Funktionsweise einer
+            Turing-Maschine auf einfache und intuitive Weise nachvollziehen können.
+          </div>
+          <br>
+          <div>Bevor der Simulator gestartet werden kann, müssen die folgenden Felder ausgefüllt werden:</div>
+          <br>
+          <div><strong>Startband:</strong></div>
+          <div>Gieb hier das Anfangswort ein, das zu Beginn auf dem Band der Turing-Maschine steht.</div>
+          <div><strong>Startzustand:</strong></div>
+          <div>Trage hier den Zustand ein, in dem die Maschine zu Beginn starten soll.</div>
+          <div><strong>Endzustände:</strong></div>
+          <div>Definiere die Zustände, die ein erfolgreiches Ende der Berechnung anzeigen.</div>
+          <div><strong>Übergangsregeln:</strong></div>
+          <div>Hier werden die Übergangsfunktionen der Turing-Maschine festgelegt.</div>
+          <div>Das Format lautet:</div>
+          <div><strong>[</strong>Aktueller Zustand<strong>] </strong><strong>[</strong>Aktuelles Zeichen<strong>]
+            </strong><strong>[</strong>-><strong>] </strong><strong>[</strong>Neuer Zustand<strong>]
+            </strong><strong>[</strong>Neues Zeichen<strong>] </strong><strong>[</strong>Bewegungsrichtung
+            L/R/N<strong>] </strong></div>
+          <div>L = Linksbewegung, R = Rechtsbewegung, N = Neutralbewegung</div>
+          <div>Beispiel: <strong>[</strong>q0<strong>] </strong><strong>[</strong>1<strong>]
+            </strong><strong>[</strong>-><strong>] </strong><strong>[</strong>q1<strong>]
+            </strong><strong>[</strong>0<strong>] </strong><strong>[</strong>R<strong>] </strong></div>
+          <br>
+          <br>
+          <div>Der Simulator wird über sechs Schaltflächen gesteuert:</div>
+          <br>
+          <div><strong>Maschine zurücksetzen (oder <img
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNDEuNzMgMTQxLjczIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDEuNzMgMTQxLjczOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBvbHlnb24gcG9pbnRzPSI3MC44NywyMS40NSAyMi4xOSw2My42IDExOS41NCw2My42IAkiLz4KCTxyZWN0IHg9IjIyLjE5IiB5PSI3My42OCIgd2lkdGg9Ijk3LjM2IiBoZWlnaHQ9IjI0LjIiLz4KPC9nPgo8L3N2Zz4K"
+                width="16px" alt="eject">):</strong></div>
+          <div>Setzt die Maschine in ihren ursprünglichen Zustand zurück.</div>
+          <div><strong>Maschine initialisieren (oder <img
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNDEuNzMgMTQxLjczIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDEuNzMgMTQxLjczOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxyZWN0IHg9IjIxLjI2IiB5PSIxMS4yNiIgd2lkdGg9Ijk5LjIxIiBoZWlnaHQ9Ijk5LjIxIi8+Cjwvc3ZnPgo="
+                width="16px" alt="stop">):</strong></div>
+          <div>Überträgt das Startband in den internen Speicher und initialisiert die Turing-Maschine.</div>
+          <div><strong>Maschine pausieren (oder <img
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNDEuNzMgMTQxLjczIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDEuNzMgMTQxLjczOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHJlY3QgeD0iMC42MyIgeT0iNDguNzYiIHRyYW5zZm9ybT0ibWF0cml4KC0xLjgzNjk3MGUtMTYgMSAtMSAtMS44MzY5NzBlLTE2IDExMS4xMDI1IDEwLjYyOTgpIiB3aWR0aD0iOTkuMjEiIGhlaWdodD0iMjQuMiIvPgoJPHJlY3QgeD0iNDEuODkiIHk9IjQ4Ljc2IiB0cmFuc2Zvcm09Im1hdHJpeCgtMS44MzY5NzBlLTE2IDEgLTEgLTEuODM2OTcwZS0xNiAxNTIuMzYyMSAtMzAuNjI5OCkiIHdpZHRoPSI5OS4yMSIgaGVpZ2h0PSIyNC4yIi8+CjwvZz4KPC9zdmc+Cg=="
+                width="16px" alt="pause">):</strong></div>
+          <div>Pausiert die Ausführung der aktuellen Berechnung.</div>
+          <div><strong>Maschine ausführen (Schritt) (oder <img
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNDEuNzMgMTQxLjczIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDEuNzMgMTQxLjczOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBvbHlnb24gcG9pbnRzPSI2NC45Myw2MC44NyAyMi43NywxMS4yNiAyMi43NywxMTAuNDcgCSIvPgoJPHJlY3QgeD0iMzQuMDIiIHk9IjUyLjU1IiB0cmFuc2Zvcm09Im1hdHJpeCgtMS44MzY5NzBlLTE2IDEgLTEgLTEuODM2OTcwZS0xNiAxNDQuNDk2IC0yMi43NjM3KSIgd2lkdGg9Ijk5LjIxIiBoZWlnaHQ9IjE2LjYzIi8+Cgk8cmVjdCB4PSI2MS4wNCIgeT0iNTIuNTUiIHRyYW5zZm9ybT0ibWF0cml4KC0xLjgzNjk3MGUtMTYgMSAtMSAtMS44MzY5NzBlLTE2IDE3MS41MTI1IC00OS43ODAyKSIgd2lkdGg9Ijk5LjIxIiBoZWlnaHQ9IjE2LjYzIi8+CjwvZz4KPC9zdmc+Cg=="
+                width="16px" alt="step">):</strong></div>
+          <div>Führt einen einzelnen Berechnungsschritt gemäß den Übergangsregeln aus.</div>
+          <div><strong>Maschine ausführen (oder <img
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxNDEuNzMgMTQxLjczIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDEuNzMgMTQxLjczOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+Cjxwb2x5Z29uIHBvaW50cz0iMTA1LjkzLDYwLjg3IDM1LjgsMTEuNTIgMzUuOCwxMTAuMjIgIi8+Cjwvc3ZnPgo="
+                width="16px" alt="run">):</strong></div>
+          <div>Lässt das gesamte Programm ablaufen, wobei die Ausführungsgeschwindigkeit wählbar ist.</div>
+          <div><strong>Programm laden:</strong></div>
+          <div>Lädt eine fertige Konfiguration und initialisiert den Simulator mit einem vorgegebenen Programm.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal#2 end-->
+  <div class="container-fluid mt-2">
+    <!--<h1>Turing-Maschinen-Simulator</h1>-->
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div>
+          <h4>Band:</h4>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div id="tapeContainer"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 d-flex align-items-center">
+        <h4>Status:</h4>
+        <h5 class="mx-1" id="status-symbol"> A</h5>
+      </div>
+      <div class="col-12 mb-3">
+        <div id="status"></div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-sm-6 p-2">
+        <label class="form-label">Übergangsregeln (zeilenweise):</label>
+        <br>
+        <textarea class="form-control" id="rules" rows="16" placeholder="z.B.: q0 1 -> q1 0 R"></textarea>
+      </div>
+      <div class="col-sm-6 p-2">
+        <label class="form-label">Startband:</label>
+        <br>
+        <input type="text" class="form-control" id="inputTape" placeholder="z.B.: 101010">
+        <br>
+        <label class="form-label">Startzustand:</label>
+        <br>
+        <input type="text" class="form-control" id="startState" placeholder="z.B.: q0">
+        <br>
+        <label class="form-label">Endzustände (kommagetrennt):</label>
+        <br>
+        <input type="text" class="form-control" id="endStates" placeholder="z.B.: qf">
+        <br>
+        <label class="form-label">Endband:</label>
+        <br>
+        <input type="text" class="form-control" id="outputTape" placeholder="" disabled>
+        <br>
+        <div class="d-grid gap-2 col-8 mx-auto">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButtonSpeed"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Programm laden
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonSpeed">
+              <li><button class="btn dropdown-item" type="button" onclick="loadProgram1()">Binärzahl
+                  inkrementieren</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="loadProgram2()">Binärzahl
+                  dekrementieren</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="loadProgram3()">Binärzahl
+                  vergleichen</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 mb-2">
+        <div class="d-grid gap-2 col-8 mx-auto">
+          <div class="btn-group dropup">
+            <button type="button" class="btn btn-secondary" style="width: 88%;" onclick="run()">Maschine ausführen
+            </button>
+            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+              data-bs-toggle="dropdown" aria-expanded="false" style="width: 12%;">
+              <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item disabled" aria-disabled="true">Geschwindigkeit</a></li>
+              <li><button class="btn dropdown-item" type="button" onclick="changeRunDelay(1)">100 %</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="changeRunDelay(50)">90 %</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="changeRunDelay(150)">80 %</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="changeRunDelay(300)">70 %</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="changeRunDelay(400)">60 %</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="changeRunDelay(500)">50 %</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="changeRunDelay(700)">40 %</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="changeRunDelay(900)">30 %</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="changeRunDelay(1100)">20 %</button></li>
+              <li><button class="btn dropdown-item" type="button" onclick="changeRunDelay(1300)">10 %</button></li>
+            </ul>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="step()">Maschine ausführen (Schritt)</button>
+          <button type="button" class="btn btn-secondary" onclick="pause()">Maschine pausieren</button>
+        </div>
+      </div>
+      <div class="col-sm-6 mb-2">
+        <div class="d-grid gap-2 col-8 mx-auto">
+          <button type="button" class="btn btn-secondary" onclick="location.reload()">Maschine
+            zurücksetzen</button>
+          <button type="button" class="btn btn-secondary" onclick="init()">Maschine initialisieren</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <footer class="bg-light border-top pt-1 pb-2 d-flex flex-column">
+    <div class="d-flex flex-row justify-content-center" style="font-size: 80%">
+      <div>Copyright © 2025 philbruck</div>
+    </div>
+    <div class="d-flex flex-row justify-content-center" style="font-size: 60%">
+      <a class="link-dark link-opacity-50-hover link-underline link-underline-opacity-0"
+        href="https://github.com/philbruck" target="blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </footer>
+  <!-- .......................................................................... script .......................................................................... -->
+  <script>
+    let tape = [];
+    let head = 0;
+    let state;
+    let transitions;
+    let endStates = [];
+    let runDelay = 500;
+    let pauseMachine = 0;
+    let isMachineRunning = 0;
+
+    const windowWidth = window.innerWidth;
+    const windowFontSize = parseInt(window.getComputedStyle(document.body).getPropertyValue('font-size'));
+    const tapeCellSize = (windowFontSize * 2.5) + ((windowFontSize * 0.1) * 2) // 2.5 und 0.1 specified in updateTapeVisualization()
+    const halfTapeCellCount = parseInt(((windowWidth / tapeCellSize) - 1) / 2); // -1 because, I diplay two half-cells all the time for better optic
+    const errorColors = { cell: "#ffcccc", head: "#e60000" };
+    const successColors = { cell: "#d6f5d6", head: "#2eb82e" };
+
+    function parseRules(text) {
+      const lines = text.trim().split("\n");
+      const rules = {};
+      lines.forEach(line => {
+        const match = line.match(/(\S+)\s+(\S+)\s*->\s*(\S+)\s+(\S+)\s+([LRN])$/); //Regular expression, checks for input conformity
+        if (match) {
+          let [_, currentState, readSymbol, newState, writeSymbol, direction] = match;
+
+          // "_" stands for " " internally
+          if (readSymbol === "_") readSymbol = " ";
+          if (writeSymbol === "_") writeSymbol = " ";
+
+          rules[`${currentState},${readSymbol}`] = { newState, writeSymbol, direction };
+        }
+      });
+      return rules;
+    }
+
+    function init() {
+      pause();
+      document.getElementById("outputTape").value = "";
+
+      let inputTemp = document.getElementById("inputTape").value.trim();
+      if (inputTemp === "") { inputTemp = " "; } //Odd number of tapeInputs
+      const input = " ".repeat(halfTapeCellCount) + inputTemp + " ".repeat(halfTapeCellCount);
+
+      //Write the input string in the variable "tape", each character in one place. If "_" then " "
+      tape = input.split("").map(ch => ch === "_" ? " " : ch);
+      //Head in the middle of the tape
+      head = halfTapeCellCount;
+
+      //Write the start state to the "state" variable
+      state = document.getElementById("startState").value.trim();
+      //Parse the rules
+      transitions = parseRules(document.getElementById("rules").value);
+      //Write the end state in the "endState" variable
+      endStates = document.getElementById("endStates").value.split(",").map(s => s.trim());
+      updateTapeVisualization(successColors);
+      document.getElementById("status").innerHTML = `Initialisiert mit Startzustand: ${state}`;
+      document.getElementById("status-symbol").innerHTML = `&#128076`;
+      return;
+    }
+
+    function updateTapeVisualization(color) {
+      const container = document.getElementById("tapeContainer");
+      container.innerText = "";
+      container.className = "d-flex flex-wrap justify-content-center my-3 py-1 border-top border-bottom border-dark";
+
+      let first = head - halfTapeCellCount;
+      let last = head + halfTapeCellCount;
+
+      const halfCell1 = document.createElement("div");
+      halfCell1.className = "border-top border-bottom border-end border-dark text-center";
+      halfCell1.style.margin = "0.1rem"
+      halfCell1.style.width = "1.25rem";
+      halfCell1.style.height = "2.5rem";
+      halfCell1.style.lineHeight = "1.25rem";
+      halfCell1.style.fontFamily = "monospace";
+      halfCell1.style.backgroundColor = tape[first] === " " ? "#ffffff" : color.cell;
+      container.appendChild(halfCell1);
+
+      for (let i = first + 1; i < last; i++) { // +1 due to arithmetic inaccuracy (just display one tapeCell less at the beginning and at the end)
+        const cell = document.createElement("div");
+        cell.className = "border border-dark text-center";
+        cell.style.margin = "0.1rem"
+        cell.style.width = "2.5rem";
+        cell.style.height = "2.5rem";
+        cell.style.lineHeight = "2.5rem";
+        cell.style.fontFamily = "monospace";
+        cell.style.backgroundColor = tape[i] === " " ? "#ffffff" : color.cell;
+        cell.textContent = tape[i] === " " ? "_" : tape[i];
+        if (i === head) {
+          cell.style.backgroundColor = color.head;
+        }
+
+
+        if (i === head) {
+          const arrow = document.createElement("div");
+          arrow.innerHTML = "&#8593;"; //or: &ShortUpArrow
+          arrow.style.position = "absolute";
+          arrow.style.marginTop = "-1.3rem";
+          arrow.style.width = "100%";
+          arrow.style.textAlign = "center";
+          arrow.style.scale = 1.5;
+          cell.style.position = "relative";
+          cell.appendChild(arrow);
+        }
+
+        container.appendChild(cell);
+      }
+
+      const halfCell2 = document.createElement("div");
+      halfCell2.className = "border-top border-bottom border-start border-dark text-center";
+      halfCell2.style.margin = "0.1rem"
+      halfCell2.style.width = "1.25rem";
+      halfCell2.style.height = "2.5rem";
+      halfCell2.style.lineHeight = "1.25rem";
+      halfCell2.style.fontFamily = "monospace";
+      halfCell2.style.backgroundColor = tape[last] === " " ? "#ffffff" : color.cell;
+      container.appendChild(halfCell2);
+
+      return;
+    }
+
+    function step() {
+      if (endStates.includes(state)) {
+        document.getElementById("status").innerHTML = `Endzustand erreicht: ${state}`;
+        document.getElementById("status-symbol").innerHTML = `&#9989`;
+        document.getElementById("outputTape").value = tape.join('').trim();
+        updateTapeVisualization(successColors);
+        return 0;
+      }
+
+      const symbol = tape[head] || " ";
+      const key = `${state},${symbol}`;
+      const rule = transitions[key];
+
+      if (!rule) {
+        document.getElementById("status").innerHTML = `Maschinenstillstand! Kein Übergang für (${state}, ${symbol === " " ? "_" : symbol})`;
+        document.getElementById("status-symbol").innerHTML = `&#10060`;
+        document.getElementById("outputTape").value = tape.join('').trim();
+        updateTapeVisualization(errorColors);
+        return 0;
+      }
+
+      tape[head] = rule.writeSymbol;
+      state = rule.newState;
+
+      if (rule.direction === "R") {
+        head += 1;
+      } else if (rule.direction === "L") {
+        head -= 1;
+      }
+
+      if (head < halfTapeCellCount) {
+        tape.unshift(" ");
+        head = halfTapeCellCount;
+      } else if (head >= halfTapeCellCount) {
+        tape.push(" ");
+      }
+
+      updateTapeVisualization(successColors);
+
+      document.getElementById("status").innerText = `Zustand: ${state}`;
+      document.getElementById("status-symbol").innerText = ` `;
+
+      return 1;
+    }
+
+    function run() {
+      isMachineRunning = 1;
+      if (pauseMachine) {
+        pauseMachine = 0;
+        isMachineRunning = 0;
+        return;
+      }
+      else if (step()) {
+        setTimeout(run, runDelay);
+      }
+      else {
+        isMachineRunning = 0;
+        return;
+      }
+    }
+
+    function pause() {
+      if (isMachineRunning) {
+        pauseMachine = 1;
+      }
+      return;
+    }
+
+    function changeRunDelay(a) {
+      runDelay = a;
+      return;
+    }
+
+    function loadProgram1() {
+
+      document.getElementById("rules").value = "q0 0 -> q0 0 R\n" +
+        "q0 1 -> q0 1 R\n" +
+        "q0 _ -> q1 _ L\n" +
+        "\n" +
+        "q1 0 -> qf 1 L\n" +
+        "q1 1 -> q1 0 L\n" +
+        "q1 _ -> qf 1 L\n";
+
+      document.getElementById("inputTape").value = "101011";
+      document.getElementById("startState").value = "q0";
+      document.getElementById("endStates").value = "qf";
+      init();
+      return;
+    }
+    function loadProgram2() {
+      document.getElementById("rules").value = "q0 0 -> q0 0 R\n" +
+        "q0 1 -> q1 1 R\n" +
+        "\n" +
+        "q1 0 -> q1 0 R\n" +
+        "q1 1 -> q1 1 R\n" +
+        "q1 _ -> q2 _ L\n" +
+        "\n" +
+        "q2 0 -> q2 1 L\n" +
+        "q2 1 -> qf 0 L\n";
+
+      document.getElementById("inputTape").value = "101000";
+      document.getElementById("startState").value = "q0";
+      document.getElementById("endStates").value = "qf";
+      init();
+      return;
+    }
+    function loadProgram3() {
+      document.getElementById("rules").value = "q0 1 -> qx0 x R\n" +
+        "q0 0 -> qy0 y R\n" +
+        "\n\n" +
+        "qx0 0 -> qx0 0 R\n" +
+        "qx0 1 -> qx0 1 R\n" +
+        "qx0 # -> qx1 # R\n" +
+        "\n" +
+        "qx1 x -> qx1 x R\n" +
+        "qx1 y -> qx1 y R\n" +
+        "qx1 1 -> qx2 x L\n" +
+        "\n" +
+        "qx2 x -> qx2 x L\n" +
+        "qx2 y -> qx2 y L\n" +
+        "qx2 # -> qx3 # L\n" +
+        "\n" +
+        "qx3 0 -> qx3 0 L\n" +
+        "qx3 1 -> qx3 1 L\n" +
+        "qx3 x -> q0 x R\n" +
+        "\n\n" +
+        "qy0 0 -> qy0 0 R\n" +
+        "qy0 1 -> qy0 1 R\n" +
+        "qy0 # -> qy1 # R\n" +
+        "\n" +
+        "qy1 x -> qy1 x R\n" +
+        "qy1 y -> qy1 y R\n" +
+        "qy1 0 -> qy2 y L\n" +
+        "\n" +
+        "qy2 x -> qy2 x L\n" +
+        "qy2 y -> qy2 y L\n" +
+        "qy2 # -> qy3 # L\n" +
+        "\n" +
+        "qy3 0 -> qy3 0 L\n" +
+        "qy3 1 -> qy3 1 L\n" +
+        "qy3 y -> q0 y R\n" +
+        "\n\n" +
+        "q0 # -> q1 # R\n" +
+        "\n" +
+        "q1 x -> q1 x R\n" +
+        "q1 y -> q1 y R\n" +
+        "q1 _ -> qf _ L\n";
+
+      document.getElementById("inputTape").value = "110#110";
+      document.getElementById("startState").value = "q0";
+      document.getElementById("endStates").value = "qf";
+      init();
+      return;
+    }
+
+    window.onload = () => {
+      document.getElementById("inputTape").value = "";
+      document.getElementById("startState").value = "q0";
+      document.getElementById("endStates").value = "qf";
+      document.getElementById("rules").value = "";
+      init();
+    };
+
+  </script>
+
+
+</body>
+
+</html>
