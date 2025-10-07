@@ -33,7 +33,7 @@ define the start state and define the end states. After initialization, the turi
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
   <header class="sticky-top">
     <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
       <div class="container-fluid">
@@ -135,7 +135,7 @@ define the start state and define the end states. After initialization, the turi
           <div><strong>Formal definition according to Hoffmann:</strong></div>
           <div>
             <div>A (deterministic) Turing machine has 7 tuples (<i>S</i>, <i>Σ</i>, <i>П</i>, <i>δ</i>,
-              <i>s₀</i>, <i>◻</i>, <i>Ε</i>).
+              <i>s₀</i>, <i>☐</i>, <i>Ε</i>).
             </div>
             <div>These are:</div>
             <ul>
@@ -144,7 +144,7 @@ define the start state and define the end states. After initialization, the turi
               <li>the tape alphabet <i>П</i> including <i>П ⊃ Σ</i>,</li>
               <li>the state transition function <i>δ : S × П → S × П × {←, →}</i>,</li>
               <li>the start state <i>s₀</i>,</li>
-              <li>the blank symbol <i>◻</i> ∈ <i>П ∖ Σ</i>,</li>
+              <li>the blank symbol <i>☐</i> ∈ <i>П ∖ Σ</i>,</li>
               <li>the set of final states <i>Ε ⊆ S</i>.</li>
             </ul>
           </div>
@@ -327,9 +327,9 @@ define the start state and define the end states. After initialization, the turi
       </div>
     </div>
   </div>
-
   <br>
-  <footer class="bg-light border-top pt-1 pb-2 d-flex flex-column">
+  
+  <footer class="mt-auto bg-light border-top pt-1 pb-2 d-flex flex-column">
     <div class="d-flex flex-row justify-content-center" style="font-size: 80%">
       <div>Copyright © 2025 philbruck</div>
     </div>
